@@ -38,7 +38,7 @@ func MakeMetricName(parts ...string) string {
 	return strings.Join(parts, "_")
 }
 
-func SanitizeValue(s string) (float64, error) {
+func SanitizeValue(s string, testS string) (float64, error) {
 	var err error
 	var value float64
 	var resultErr string
@@ -55,6 +55,14 @@ func SanitizeValue(s string) (float64, error) {
 		return 0.0, nil
 	}
 	resultErr = resultErr + "; " + fmt.Sprintf("%s", err)
+
+	if testS != "" {
+		if s == testS {
+			return 1, nil
+		} else {
+			return 0, nil
+		}
+	}
 
 	if s == "<nil>" {
 		return math.NaN(), nil
@@ -94,6 +102,7 @@ func CreateMetricsList(c config.Module) ([]JSONMetric, error) {
 				KeyJSONPath:     metric.Path,
 				LabelsJSONPaths: variableLabelsValues,
 				ValueType:       valueType,
+				Rule:            metric.Rule,
 			}
 			metrics = append(metrics, jsonMetric)
 		case config.ObjectScrape:

@@ -38,7 +38,7 @@ func TestSanitizeValue(t *testing.T) {
 	}
 
 	for i, test := range tests {
-		actualOutput, err := SanitizeValue(test.Input)
+		actualOutput, err := SanitizeValue(test.Input, "ok")
 		if err != nil && test.ShouldSucceed {
 			t.Fatalf("Value snitization test %d failed with an unexpected error.\nINPUT:\n%q\nERR:\n%s", i, test.Input, err)
 		}
@@ -49,7 +49,7 @@ func TestSanitizeValue(t *testing.T) {
 }
 
 func TestSanitizeValueNaN(t *testing.T) {
-	actualOutput, err := SanitizeValue("<nil>")
+	actualOutput, err := SanitizeValue("<nil>", "ok")
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -29,6 +29,7 @@ type Metric struct {
 	ValueType ValueType
 	Help      string
 	Values    map[string]string
+	Rule      string
 }
 
 type ScrapeType string

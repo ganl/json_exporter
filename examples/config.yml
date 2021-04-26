@@ -4,6 +4,7 @@ modules:
     metrics:
     - name: example_global_value
       path: "{ .counter }"
+      rule: "ok"
       help: Example of a top-level global value scrape in the json
       labels:
         environment: beta # static label

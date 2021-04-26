@@ -37,6 +37,7 @@ type JSONMetric struct {
 	ValueJSONPath   string
 	LabelsJSONPaths []string
 	ValueType       prometheus.ValueType
+	Rule            string
 }
 
 func (mc JSONMetricCollector) Describe(ch chan<- *prometheus.Desc) {
@@ -55,7 +56,7 @@ func (mc JSONMetricCollector) Collect(ch chan<- prometheus.Metric) {
 				continue
 			}
 
-			if floatValue, err := SanitizeValue(value); err == nil {
+			if floatValue, err := SanitizeValue(value, m.Rule); err == nil {
 
 				ch <- prometheus.MustNewConstMetric(
 					m.Desc,
@@ -89,7 +90,7 @@ func (mc JSONMetricCollector) Collect(ch chan<- prometheus.Metric) {
 						continue
 					}
 
-					if floatValue, err := SanitizeValue(value); err == nil {
+					if floatValue, err := SanitizeValue(value, m.Rule); err == nil {
 						ch <- prometheus.MustNewConstMetric(
 							m.Desc,
 							prometheus.UntypedValue,
